@@ -4,9 +4,11 @@ import QuizBox from "./components/QuizBox";
 import "./App.css";
 
 function App() {
+  //data is api
   const [data, setData] = useState([]);
-  const [answers, setAnswers] = useState({});
-  const [currentQuestion, setCurrentQuestion] = useState(-1);
+  const [answers, setAnswers] = useState({}); // these are the answers selected by user
+  // for getting one question on page
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // the index of question that is currently shown on screen. -1 is undefined means (initial/currentQuestion is empty)
   const [score, setScore] = useState(-1);
 
   //Effect callbacks are synchronous to prevent race conditions. Put the async function inside:
@@ -21,35 +23,32 @@ function App() {
 
   useEffect(() => {
     const fn = async () => {
-      setCurrentQuestion(-1);
       const request = await fetch("/api");
       const result = await request.json();
-      console.log(result);
       setData(result);
-      setAnswers({});
-      setCurrentQuestion(0);
-      setScore(-1);
+      setAnswers({}); // reset the user answers
+      setCurrentQuestionIndex(0); // show the first question by setting index top 0
+      setScore(-1); // reset the score
     };
     fn();
   }, []);
 
-  // handleOptionClick = () => {};
   const handleNextQuestionClick = () => {
-    if (currentQuestion !== -1 || currentQuestion < data.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (currentQuestionIndex !== -1 || currentQuestionIndex < data.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
   const handlePrevQuestionClick = () => {
-    if (currentQuestion !== -1 || currentQuestion > 1) {
-      setCurrentQuestion(currentQuestion - 1);
+    if (currentQuestionIndex !== -1 || currentQuestionIndex > 1) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
   const setAnswer = (answer) => {
     setAnswers({
       ...answers,
-      [currentQuestion]: answer,
+      [currentQuestionIndex]: answer,
     });
   };
 
@@ -62,29 +61,31 @@ function App() {
     setScore(newScore);
   };
 
-  const allQuestionsAnswered = Object.keys(answers).length === data.length;
+  //for showing submit button
+  const allQuestionsAnswered = Object.keys(answers).length === data.length; // when all the questions are answered the number of answer will be equal to number of question
 
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <p>{!data ? "Loading..." : JSON.stringify(data, null, 4)}</p> */}
-      </header>
-      {currentQuestion > -1 && data.length > 0 ? (
+      <div className="header">QUIZ APP</div>
+      {currentQuestionIndex > -1 && data.length > 0 ? (
         <>
+          <div className="status">
+            {Object.keys(answers).length} of {data.length} answered
+          </div>
           <QuizBox
-            question={data[currentQuestion]}
+            question={data[currentQuestionIndex]}
             setAnswer={setAnswer}
             reviewMode={score !== -1}
-            selectedAnswer={answers[currentQuestion]}
+            selectedAnswer={answers[currentQuestionIndex]}
           />
           <button
-            disabled={currentQuestion === 0 ? true : false}
+            disabled={currentQuestionIndex === 0 ? true : false}
             onClick={handlePrevQuestionClick}
           >
             Prev
           </button>
           <button
-            disabled={currentQuestion === data.length - 1 ? true : false}
+            disabled={currentQuestionIndex === data.length - 1 ? true : false}
             onClick={handleNextQuestionClick}
           >
             Next

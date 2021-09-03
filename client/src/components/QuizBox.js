@@ -1,15 +1,13 @@
 import React from "react";
-//import Questions from "./Questions.js.NNN";
 
 const QuizBox = ({ question, setAnswer, selectedAnswer, reviewMode }) => {
   return (
-    <div>
+    <div className="quizbox">
       <div className="question">{question.title}</div>
       <div className="choices">
         {question.choices.map((option, idx) => {
-          debugger;
           return (
-            <label htmlFor={`${question.id}-option-${idx}`}>
+            <label htmlFor={`${question.id}-option-${idx}`} key={idx}>
               <input
                 type="radio"
                 // for getting unique id
@@ -18,12 +16,12 @@ const QuizBox = ({ question, setAnswer, selectedAnswer, reviewMode }) => {
                 value={option}
                 onClick={(ev) => setAnswer(ev.target.value)}
                 checked={option === selectedAnswer}
-                disabled={reviewMode}
+                readOnly={reviewMode}
               />
               {option}
 
-              {reviewMode && option === question.correct ? (
-                <span>&#9989;</span>
+              {reviewMode && option.trim() === question.correct.trim() ? (
+                <span> &#9989;</span> // checkbox emoji symbol
               ) : null}
             </label>
           );

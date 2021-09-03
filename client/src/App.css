@@ -1,3 +1,56 @@
-/* .App {
+.app {
+  padding: 20px;
+  margin: 0;
+}
+
+.header {
+  color: #2a10bb;
+  font-family: "Raleway", sans-serif;
+  font-size: 62px;
+  font-weight: 800;
+  line-height: 72px;
+  margin: 0 0 24px;
   text-align: center;
-} */
+  text-transform: uppercase;
+}
+
+.quizbox {
+  height: auto;
+  width: auto;
+  /* background-color: hotpink; */
+  /* color: #fff; */
+  padding: 20px;
+  /* border: solid 3px black; */
+  margin: 10px;
+  /* text-align: center; */
+}
+
+.question {
+  font-size: larger;
+
+  font-weight: bold;
+  padding: 10px;
+}
+
+.choices {
+  display: inline-grid;
+  line-height: 1.5;
+  padding: 10px;
+}
+button {
+  margin: 30px;
+
+  height: 40px;
+}
+
+.status {
+  text-align: center;
+  font-weight: 800;
+}
+
+.score {
+  color: rgba(224, 15, 61, 1);
+  font-weight: bolder;
+  font-size: larger;
+  text-align: center;
+}
